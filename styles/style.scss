@@ -1,0 +1,761 @@
+@use "mixin" as *;
+$cBlack: black;
+$cWhite: white;
+$cRed: #F0897F;
+$fs_m: 16px;
+$fs_b: 23px;
+$mt_m: 20px;
+$contentMinWidth: 1000px;
+$contentWidth: 800px;
+$contentLineHeight: 30px;
+$navheight: 100px;
+$translateMid: -50%, -50%;
+
+
+#container {
+  text-align: center;
+  min-width: $contentMinWidth;
+  background-color: whitesmoke;
+  position: relative;
+  z-index: 100;
+
+}
+
+body {
+  font-family: 'Gideon Roman', cursive;
+  font-family: 'Noto Serif JP', serif;
+}
+
+// ヘッダー
+.header {
+  z-index: 10000;
+  position: fixed;
+  height: $navheight;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background: transparent;
+  
+  &__inner {
+    display: flex;
+    justify-content: space-between;
+   
+  }
+
+  &__left {
+    margin-left: 10px;
+    font-size: 1px;
+    margin-top: 10px;
+  }
+  &__right {
+    margin-top: 20px;
+    margin-right: 30px;
+
+
+
+
+  }
+
+
+  // メニューアイコン
+
+  .menu-icon {
+      background-color: unset;
+      border: none;
+      outline: none !important;
+      cursor: pointer;
+      height: 100px;
+      margin: 0, auto;
+  
+      & > span {
+          background-color: $cBlack;
+          width: 35px;
+          height: 1px;
+          display: block;
+          margin-bottom: 9px;
+          transition: transform 0.7s;
+  
+          &:last-child {
+              margin-bottom: 0;
+          }
+      }
+  }
+
+
+
+}
+
+.menu-open {
+  
+  & .menu-icon {
+    
+      & > span {
+
+          &:nth-child(1) {
+              transition-delay: 70ms;
+              transform: translateY(10px) rotate(140deg);
+          }
+          &:nth-child(2) {
+              transition-delay: 0s;
+              transform:  translateX(-17px) scaleX(0);
+          }
+          &:nth-child(3) {
+              transition-delay: 140ms;
+              transform: translateY(-10px) rotate(-140deg);
+          }
+      }
+  }
+}
+
+.annai {
+font-size: 1px;
+}
+
+// ナビメニュー
+
+#global-container {
+  position: relative;
+
+}
+
+#nav {
+  position: fixed;
+  top: 20%;
+  left: 100%;
+  width: 130px;
+  transform: translateX(-100%);
+  z-index: 50;
+  opacity: 0;
+  text-align: left;
+  height: 400px;
+  background-color: $cBlack;
+  box-shadow: -4px 10px 26px -6px rgba(0,0,0,0.6);
+
+  .navLists {
+    list-style: none;
+    text-align: center;
+    margin-right: 10px;
+
+  }
+
+  .navLi {
+
+    margin-top: 50px ;
+    font-size: $fs_m;
+
+    a {
+      color: aliceblue;
+      text-decoration: none;
+    }
+  }
+}
+
+// メニュー時の全体の動き
+
+.menu-open {
+
+
+
+  & #container {
+
+    z-index: 10;
+
+    
+
+  }
+
+  & #nav {
+    opacity: 1;
+    @include animation(
+        $name: kf-animate-nav,
+        $duration: 0.8s,
+        $timing-function: cubic-bezier(0.39, 1.57, 0.58, 1),
+        $fill-mode: both
+      );
+
+
+  }
+  @keyframes kf-animate-nav {
+    0% {
+      opacity: 0;
+    }
+
+  
+    100% {
+      opacity: 1;
+    }
+  }
+
+
+
+}
+
+
+
+
+
+
+// タイトル
+.title {
+  height: 1000px;
+  position: relative;
+  width: 100%;
+
+  .mytitle {
+    position: absolute;
+    font-size: 30px;
+    top: 30%;
+    left: 50%;
+    transform: translate($translateMid);
+
+
+    
+    
+  }
+
+  // タイトル文字アニメーション
+.tween-animate-title {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: $cBlack;
+  opacity: 0;
+  font-size: 2em;
+
+  &.inview {
+    opacity: 1;
+
+    & .char {
+      display: inline-block;
+
+      @include animation(
+        $name: kf-animate-chars,
+        $duration: 0.8s,
+        $timing-function: cubic-bezier(0.39, 1.57, 0.58, 1),
+        $fill-mode: both
+      );
+
+      @for $i from 1 through 30 {
+          &:nth-child(#{$i}) {
+              animation-delay: $i * 0.15s;
+          }
+      }
+    }
+  }
+}
+
+@keyframes kf-animate-chars {
+  0% {
+    opacity: 0;
+    transform: translateY(50%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+  //三角と棒アニメーション
+  .stick {
+    position: absolute;
+    top: 63%;
+    left: 300px;
+    height: 60px;
+    transform: translateY(100%);
+    
+    opacity: 0;
+    border-right:1px solid #000000; 
+
+    @include animation(
+      $name: kf-animate-stick,
+      $duration: 3s,
+      $timing-function: ease,
+      $fill-mode: both,
+      $delay: 1s
+      
+    );
+  }
+
+
+  @keyframes kf-animate-stick {
+    0% {
+      opacity: 0;
+      transform: translateY(-200%);
+    }
+
+  
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .triangle{
+    top: 68%;
+    left: 290px;
+    position: absolute;
+    border-top: 40px solid $cRed;
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
+    opacity: 0;
+    transform: translateY(-500px);
+
+    @include animation(
+      $name: kf-animate-triangle,
+      $duration: 1s,
+      $timing-function: ease,
+      $fill-mode: both,
+      $delay: 3s
+    );
+  }
+
+  @keyframes kf-animate-triangle {
+    0% {
+      opacity: 0;
+      transform: translateY(10%);
+    }
+  
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+// メイン
+
+.main {
+  max-width: 1000px;
+  height: 4000px;
+  margin: auto;
+  display: inline-block;
+  text-align: center;
+
+
+}
+
+.intro, .born, .school, .career {
+  display: inline-block;
+  width: 80%;
+  margin-top: 30px;
+  position: relative;
+}
+
+.intro {
+
+  height: 700px;
+
+  .intro1 {
+    font-size: $fs_b;
+
+    text-align: center;
+  }
+
+  .intro2 {
+
+    display: flex;
+    height: 300px;
+    align-items: center;
+    margin-top: 100px;
+
+
+    .firstimg {
+      height: 300px;
+      width: 300px;
+      margin-left: 50px;
+      
+    }
+
+    .aboutme {
+      font-size: $fs_m;
+      text-align: left;
+      margin-left: 140px;
+      line-height: $contentLineHeight;
+    }
+  }
+}
+
+.born {
+
+  height: 500px;
+
+  .born1 {
+    font-size: $fs_b;
+  }
+
+  .born2 {
+    line-height: $contentLineHeight;
+    text-align: center;
+    font-size: $fs_m;
+    margin-top: $mt_m;
+  }
+
+  // 牛
+  .bullimg {
+
+    height: 100px;
+    width: 100px;
+    margin-top: 100px;
+  
+    @include animation(
+        $name: kf-animate-bull,
+        $duration: 8s,
+        $timing-function: ease,
+        $fill-mode: both,
+        $iteration-count: infinite
+      );
+  }
+  @keyframes kf-animate-bull {
+    0% {
+      transform: translateX(100vw);
+    }
+  
+    50% {
+      transform: translateX(30vw);
+    }
+  
+    70% {
+      transform: translateX(30vw);
+    }
+  
+    100% {
+      transform: translateX(-90vw);
+    }
+  }
+
+}
+
+.school {
+  height: 1000px;
+  text-align: center;
+
+  .school1 {
+    font-size: $fs_b;
+  }
+  .school2 {
+    font-size: $fs_m;
+    margin-top: $mt_m;
+
+  }
+  .school3 {
+    font-size: $fs_m;
+    margin-top: $mt_m;
+  }
+
+
+    .myimg1 {
+      display: inline-block;
+      height: 400px;
+      width: 400px;
+    margin-top: 200px;
+
+    }
+  
+
+  .school4 {
+    padding-top: 200px;
+    font-size: $fs_m;
+    margin-top: $mt_m;
+  }
+
+
+}
+
+.career {
+  height: 1600px;
+  .career1 {
+    font-size: $fs_b;
+  }
+
+  .career2 {
+    height: 500px;
+    width: $contentWidth;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+
+      .circle-c2 {
+          display: inline-block;
+          position: relative;
+          width: 400px;
+          height: 400px;
+          border-radius: 50%;
+          border: solid 1px $cBlack;
+          box-shadow: 0 5px 5px rgba(0, 0, 0, 0.15);
+
+
+          .images1 {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            display: flex;
+            width: 300px;
+            transform: translate(-50%, -50%);
+
+
+        
+            .html, .css {
+              height: 90px;
+              width: 80px;
+              margin-right: 20px;
+            }
+            .js {
+              height: 90px;
+              width:100px;
+            }
+        }
+
+    }
+    .career2-1 {
+      width: 300px;
+      line-height: $contentLineHeight;
+      text-align: left;
+      span {
+        color: $cRed;
+
+      }
+
+
+
+
+    }
+
+
+  }
+
+  .career3 {
+    height: 500px;
+    width: $contentWidth;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+      .circle-c3 {
+          display: inline-block;
+          position: relative;
+          width: 400px;
+          height: 400px;
+          border-radius: 50%;
+          border: solid 1px $cBlack;
+          box-shadow: 0 5px 5px rgba(0, 0, 0, 0.15);
+
+
+          .images2 {
+            display: flex;
+            flex-wrap: wrap;
+            position: absolute;
+            left: 27%;
+            top: 25%;
+            width: 200px;
+
+            transform: translateY(-50%, -50%);
+        
+            .php, .mysql, .apache, .linux{
+              height: 90px;
+              width: 80px;
+              margin: 10px 10px;
+
+            }
+        }
+
+    }
+    .career3-1 {
+      width: 300px;
+      line-height: $contentLineHeight;
+      text-align: left;
+      span {
+        color: $cRed;
+
+      }
+
+
+
+    }
+
+
+  }
+
+  .career4 {
+
+    height: 500px;
+    width: $contentWidth;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+      .circle-c4 {
+          display: inline-block;
+          position: relative;
+          width: 400px;
+          height: 400px;
+          border-radius: 50%;
+          border: solid 1px $cBlack;
+          box-shadow: 0 5px 5px rgba(0, 0, 0, 0.15);
+
+          .images3 {
+            display: flex;
+            flex-wrap: wrap;
+            position: absolute;
+            left: 32%;
+            top: 25%;
+            width: 200px;
+
+            transform: translateY(-50%, -50%);
+        
+            .aws {
+              height: 150px;
+              width: 120px;
+              margin: 10px 10px;
+
+            }
+        }
+    }
+    .career4-1 {
+      width: 300px;
+      text-align: left;
+      line-height: $contentLineHeight;
+
+      span {
+        color: $cRed;
+      }
+
+
+    }
+
+
+  }
+
+
+}
+
+
+
+// フッター
+
+.footer {
+  background-color: $cBlack;
+  height: 300px;
+  text-align: center;
+  vertical-align: center;
+  position: relative;
+  
+  .last {
+    position: absolute;
+    top: 50%;
+    left: 37%;
+    color: $cWhite;
+    font-size: $fs_b;
+  }
+
+  .uni {
+
+    position: absolute;
+    top: 80%;
+    left: 90%;
+    color: $cWhite;
+
+
+  }
+
+
+
+}
+
+
+// ------------------汎用アニメーション---------------------
+
+// フェードインアニメーション
+
+// アップ
+.appear.up {
+
+  transition: all 1s;
+  transform: translateY(10px);
+  opacity: 0;
+
+  &.inview {
+    opacity: 1;
+    transform: none;
+
+  }
+}
+
+// ダウン
+.appear.down {
+
+  transition: all 1s;
+  transform: translateY(-10px);
+  opacity: 0;
+
+  &.inview {
+    opacity: 1;
+    transform: none;
+
+  }
+}
+
+// ライト
+.appear.right {
+
+  transition: all 1s;
+  transform: translateX(-10px);
+  opacity: 0;
+
+  &.inview {
+    opacity: 1;
+    transform: none;
+
+  }
+}
+
+// レフト
+.appear.left {
+
+  transition: all 1s;
+  transform: translateX(10px);
+  opacity: 0;
+
+  &.inview {
+    opacity: 1;
+    transform: none;
+
+  }
+}
+
+// ヒーロースライダーアニメーション
+
+.swiper {
+  overflow: hidden ;
+}
+
+.swiper-slide {
+
+  margin-top: 100px;
+  height: 400px;
+  overflow: hidden;
+
+  & > img {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+    transform: scale(1.3);
+    transition: transform 1.9s ease;
+  }
+
+
+  &-active {
+    & > img {
+      transform: none;
+    }
+
+    & .hero__title {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
